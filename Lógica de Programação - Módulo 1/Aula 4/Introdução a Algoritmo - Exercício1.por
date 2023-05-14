@@ -3,14 +3,19 @@ programa
 	
 	funcao inicio()
 	{
-		real nota1, nota2, nota3
-		inteiro hora
-		escreva ("Quantas horas um funcionário trabalhou " + "\n")
-		leia(hora)
-		inteiro salario = hora * 10
-		inteiro salarioBruto = hora * 15
-
-		escreva(salario)
+		real valor
+		inteiro valor1 = 0
+		faca {
+		escreva("Digite um número ou zero para encerrar\n")
+		leia(valor)
+		se(valor >= 100 e valor <= 200){
+			valor1++
+		}
+		limpa()
+		}enquanto(valor != 0)
+			escreva("Foram digitados " + valor1 + " números entre 100 e 200.")
+		
+			
 	}
 }
 /* $$$ Portugol Studio $$$ 
@@ -18,7 +23,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 245; 
+ * @POSICAO-CURSOR = 62; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = ;
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;

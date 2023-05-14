@@ -7,11 +7,12 @@ programa
 		
 		inteiro a = 0
 		inteiro numerador
+		escreva("A tabuada será de qual número? " + "\n")
 		leia(numerador)
 		
 
 		para(inteiro i = 0; i < 11; i++) {
-			escreva("O cálculo de " + i + " vezes "+ numerador + " é igual a " + calculadora[a] * numerador  )
+			escreva("O cálculo de " + i + " vezes "+ numerador + " é igual a " + calculadora[a] * numerador)
 			escreva("\n")
 			a++
 		}
@@ -24,7 +25,7 @@ programa
  * Esta seção do arquivo guarda informações do Portugol Studio.
  * Você pode apagá-la se estiver utilizando outro editor.
  * 
- * @POSICAO-CURSOR = 264; 
+ * @POSICAO-CURSOR = 385; 
  * @PONTOS-DE-PARADA = ;
  * @SIMBOLOS-INSPECIONADOS = {calculadora, 6, 10, 11}-{a, 8, 10, 1}-{numerador, 9, 10, 9};
  * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
