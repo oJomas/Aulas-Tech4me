@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"name": "discovery-server",
+			"path": "discovery-server"
+		},
+		{
+			"path": "pizzaria"
+		},
+		{
+			"name": "gateway",
+			"path": "gateway"
+		},
+		{
+			"name": "pedidos",
+			"path": "pedidos"
+		},
+		{
+			"name": "config-server",
+			"path": "config-server"
+		}
+	]
+}
