@@ -6,8 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.tech4me.livros.httpClient.BibliotecaClient;
+import br.com.tech4me.livros.model.Biblioteca;
 import br.com.tech4me.livros.model.Livros;
 import br.com.tech4me.livros.repository.LivrosRepository;
+import br.com.tech4me.livros.shared.LivrosCompletoDTO;
 import br.com.tech4me.livros.shared.LivrosDTO;
 
 @Service
@@ -16,46 +19,57 @@ public class LivrosServiceImpl implements LivrosService {
     @Autowired
     private LivrosRepository repository;
 
+    @Autowired
+    BibliotecaClient livroClient;
+
     @Override
-    public List<LivrosDTO> obtertodas(){
-        return repository.findAll().stream().map(l -> new LivrosDTO(l.getId(), l.getTitulo(), l.getAutor(), l.getGenero())).toList();
+    public List<LivrosCompletoDTO> obtertodas(){
+        return repository.findAll().stream().map(l -> LivrosCompletoDTO.fromLivrosCompletoDTO(l)).toList();
     }
+
 
     @Override
     public Optional<LivrosDTO> obterPorId(String id) {
         Optional<Livros> livros = repository.findById(id);
         
         if(livros.isPresent()){
-            return Optional.of(new LivrosDTO(livros.get().getId(), livros.get().getTitulo(), 
-                                            livros.get().getAutor(), livros.get().getGenero()));
+            Biblioteca biblioteca = livroClient.obterLivroPorId(livros.get().getIdBiblioteca());
+            return Optional.of(LivrosDTO.fromLivros(livros.get(), biblioteca));
         }
         return Optional.empty();
     }
 
     @Override
-    public LivrosDTO cadastrar(LivrosDTO livros) {
-        Livros l = new Livros(livros);
-        repository.save(l);
-        return new LivrosDTO(l.getId(), l.getTitulo(), l.getAutor(), l.getGenero());
+    public LivrosCompletoDTO cadastrarLivros(LivrosCompletoDTO livrosDto) {
+        Livros livro = Livros.fromLivrosCompletoDTO(livrosDto);
+
+        Biblioteca biblioteca = livroClient.obterLivroPorId(livro.getIdBiblioteca());
+
+        if(biblioteca.getQuantidadeDeLivros() >= 1){
+            livroClient.cadastrarLivro(biblioteca);
+            biblioteca.setQuantidadeDeLivros(biblioteca.getQuantidadeDeLivros() - 1);
+            livroClient.atualizarLivro(biblioteca.getId(), biblioteca);
+        }
+        return LivrosCompletoDTO.fromLivrosCompletoDTO(livro);
     }
 
     @Override
-    public Optional<LivrosDTO> atualizarPorId(String id, LivrosDTO livros) {
+    public Optional<LivrosCompletoDTO> atualizarPorId(String id, LivrosCompletoDTO livrosDto) {
         Optional<Livros> livro = repository.findById(id);
 
         if(livro.isPresent()){
-            Livros livroAtualizado = new Livros(livros);
+            Livros livroAtualizado = Livros.fromLivrosCompletoDTO(livrosDto);
             livroAtualizado.setId(id);
+            Biblioteca biblioteca = livroClient.obterLivroPorId(livroAtualizado.getId());
             repository.save(livroAtualizado);
-            return Optional.of(new LivrosDTO(livroAtualizado.getId(), livroAtualizado.getTitulo(), 
-                                                livroAtualizado.getAutor(), livroAtualizado.getGenero()));
+            livroClient.atualizarLivro(id, biblioteca);
         }
         return Optional.empty();
     }
 
     @Override
     public void excluirPorId(String id) {
-        repository.deleteById(id);
+        livroClient.excluirPorId(id);
         
     }
     

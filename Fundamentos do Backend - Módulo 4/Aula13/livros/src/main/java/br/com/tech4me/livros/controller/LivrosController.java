@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.tech4me.livros.service.LivrosService;
+import br.com.tech4me.livros.shared.LivrosCompletoDTO;
 import br.com.tech4me.livros.shared.LivrosDTO;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,7 +35,7 @@ public class LivrosController {
     }
 
     @GetMapping
-    private ResponseEntity<List<LivrosDTO>> obterLivros(){
+    private ResponseEntity<List<LivrosCompletoDTO>> obterLivros(){
         return new ResponseEntity<>(service.obtertodas(), HttpStatus.OK);
     }
 
@@ -48,13 +49,13 @@ public class LivrosController {
     }
 
     @PostMapping
-    private ResponseEntity<LivrosDTO> cadastrarLivro(@RequestBody LivrosDTO livros){
-        return new ResponseEntity<>(service.cadastrar(livros), HttpStatus.OK);
+    private ResponseEntity<LivrosCompletoDTO> cadastrarLivro(@RequestBody LivrosCompletoDTO livros){
+        return new ResponseEntity<>(service.cadastrarLivros(livros), HttpStatus.OK);
     }
    
     @PutMapping("/{id}")
-    public ResponseEntity<LivrosDTO> atualizarLivro(@RequestBody LivrosDTO livro, @PathVariable String id) {
-        Optional<LivrosDTO> livroAtualizar = service.atualizarPorId(id, livro);
+    public ResponseEntity<LivrosCompletoDTO> atualizarLivro(@RequestBody LivrosCompletoDTO livro, @PathVariable String id) {
+        Optional<LivrosCompletoDTO> livroAtualizar = service.atualizarPorId(id, livro);
 
         if(livroAtualizar.isPresent()){
             return new ResponseEntity<>(livroAtualizar.get(), HttpStatus.OK);

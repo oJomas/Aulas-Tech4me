@@ -3,6 +3,7 @@ package br.com.tech4me.livros.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import br.com.tech4me.livros.shared.LivrosCompletoDTO;
 import br.com.tech4me.livros.shared.LivrosDTO;
 
 @Document("livros")
@@ -12,12 +13,31 @@ public class Livros {
     private String titulo;
     private String autor;
     private String genero;
+    private String idBiblioteca;
 
-    public Livros(LivrosDTO dto){
-        setId(dto.id());
-        setTitulo(dto.titulo());
-        setAutor(dto.autor());
-        setGenero(dto.genero());
+
+    public Livros(){
+
+    }
+
+    public static Livros fromLivros(LivrosDTO livrosDto){
+        Livros livro = new Livros();
+        livro.setId(livrosDto.id());
+        livro.setTitulo(livrosDto.titulo());
+        livro.setAutor(livrosDto.autor());
+        livro.setGenero(livrosDto.genero());
+        livro. setIdBiblioteca(livrosDto.biblioteca().getId());
+        return livro;
+    }
+
+    public static Livros fromLivrosCompletoDTO(LivrosCompletoDTO livrosDto){
+        Livros livro = new Livros();
+        livro.setId(livrosDto.id());
+        livro.setTitulo(livrosDto.titulo());
+        livro.setAutor(livrosDto.autor());
+        livro.setGenero(livrosDto.genero());
+        livro. setIdBiblioteca(livrosDto.idBiblioteca());
+        return livro;
     }
 
 
@@ -44,5 +64,15 @@ public class Livros {
     }
     public void setGenero(String genero) {
         this.genero = genero;
+    }
+
+
+    public String getIdBiblioteca() {
+        return idBiblioteca;
+    }
+
+
+    public void setIdBiblioteca(String idBiblioteca) {
+        this.idBiblioteca = idBiblioteca;
     }
 }
